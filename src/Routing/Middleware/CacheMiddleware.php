@@ -23,17 +23,14 @@ class CacheMiddleware implements MiddlewareInterface {
 	/**
 	 * @var array
 	 */
-	protected $_defaultConfig = [
+	protected array $_defaultConfig = [
 		'engine' => null,
 		'when' => null,
 		'cacheTime' => null,
 		'keyGenerator' => null,
 	];
 
-	/**
-	 * @var string|null
-	 */
-	protected $_cacheContent;
+	protected ?string $_cacheContent = null;
 
 	/**
 	 * @var array|null
@@ -101,8 +98,8 @@ class CacheMiddleware implements MiddlewareInterface {
 		$modified = $cacheStart ?: time();
 		/** @var \Cake\Http\Response $response */
 		$response = $response->withModified($modified);
-		if ($response->checkNotModified($request)) {
-			return $response;
+		if ($response->isNotModified($request)) {
+			return $response->withNotModified();
 		}
 
 		$response = $this->_deliverCacheFile($request, $response, $fileContent, $cacheExt);

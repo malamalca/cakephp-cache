@@ -1,7 +1,10 @@
 <?php
-/**
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
- */
+
+use Cache\CachePlugin;
+use Cake\Cache\Cache;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
+use TestApp\View\AppView;
 
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -28,16 +31,39 @@ define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . APP_DIR . DS);
 
+if (!defined('SECOND')) {
+	define('SECOND', 1);
+}
+if (!defined('MINUTE')) {
+	define('MINUTE', 60);
+}
+if (!defined('HOUR')) {
+	define('HOUR', 3600);
+}
+if (!defined('DAY')) {
+	define('DAY', 86400);
+}
+if (!defined('WEEK')) {
+	define('WEEK', 604800);
+}
+if (!defined('MONTH')) {
+	define('MONTH', 2592000);
+}
+if (!defined('YEAR')) {
+	define('YEAR', 31536000);
+}
+
 require dirname(__DIR__) . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
+require CAKE . 'functions.php';
 
-Cake\Core\Configure::write('App', [
-	'namespace' => 'App',
+Configure::write('App', [
+	'namespace' => 'TestApp',
 	'encoding' => 'UTF-8',
 ]);
-Cake\Core\Configure::write('debug', true);
+Configure::write('debug', true);
 
-class_alias(TestApp\View\AppView::class, 'App\View\AppView');
+class_alias(AppView::class, 'App\View\AppView');
 
 $cache = [
 	'default' => [
@@ -59,4 +85,6 @@ $cache = [
 	],
 ];
 
-Cake\Cache\Cache::setConfig($cache);
+Cache::setConfig($cache);
+
+Plugin::getCollection()->add(new CachePlugin());

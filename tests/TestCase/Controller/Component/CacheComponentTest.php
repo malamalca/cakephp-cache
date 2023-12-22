@@ -11,10 +11,7 @@ use TestApp\Controller\CacheComponentTestController;
 
 class CacheComponentTest extends TestCase {
 
-	/**
-	 * @var \TestApp\Controller\CacheComponentTestController
-	 */
-	protected $Controller;
+	protected CacheComponentTestController $Controller;
 
 	/**
 	 * @return void
@@ -22,7 +19,7 @@ class CacheComponentTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->Controller = new CacheComponentTestController();
+		$this->Controller = new CacheComponentTestController(new ServerRequest());
 		$this->Controller->startupProcess();
 
 		$this->Controller->getRequest()->getSession()->delete('CacheMessage');
@@ -58,8 +55,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . '_root.cache';
 		$result = file_get_contents($file);
@@ -89,8 +86,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . '_root.cache';
 		$result = file_get_contents($file);
@@ -122,8 +119,8 @@ class CacheComponentTest extends TestCase {
 			->method('getType')
 			->will($this->returnValue('application/json'));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . 'foo-bar-baz-json-x-y.cache';
 		$result = file_get_contents($file);
@@ -157,8 +154,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . 'foo-bar.cache';
 		$this->assertFalse(file_exists($file));
@@ -178,8 +175,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . 'foo-baz.cache';
 		$this->assertFileExists($file);
@@ -209,8 +206,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue($text));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . '_root.cache';
 		$result = file_get_contents($file);
@@ -245,8 +242,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . '_root.cache';
 		$result = file_get_contents($file);
@@ -279,8 +276,8 @@ class CacheComponentTest extends TestCase {
 			->method('getType')
 			->will($this->returnValue('text/html'));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 		$file = CACHE . 'views' . DS . 'pages-view-1.cache';
 		$this->assertFileExists($file);
 		unlink($file);
@@ -302,12 +299,12 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . '_root.html';
 
-		$this->assertFileNotExists($file, 'POST should not cache request');
+		$this->assertFileDoesNotExist($file, 'POST should not cache request');
 	}
 
 	/**
@@ -332,8 +329,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . 'customKey.cache';
 		$this->assertFileExists($file);
@@ -341,7 +338,7 @@ class CacheComponentTest extends TestCase {
 		unlink($file);
 
 		$file = CACHE . 'views' . DS . 'pages-view-1.cache';
-		$this->assertFileNotExists($file);
+		$this->assertFileDoesNotExist($file);
 	}
 
 	/**
@@ -365,8 +362,8 @@ class CacheComponentTest extends TestCase {
 			->method('getBody')
 			->will($this->returnValue((new StreamFactory())->createStream('Foo bar.')));
 
-		$event = new Event('Controller.shutdown', $this->Controller);
-		$this->Controller->Cache->shutdown($event);
+		$event = new Event('Controller.afterFilter', $this->Controller);
+		$this->Controller->Cache->afterFilter($event);
 
 		$file = CACHE . 'views' . DS . 'custom_pages-view-1.cache';
 		$this->assertFileExists($file);
@@ -374,7 +371,7 @@ class CacheComponentTest extends TestCase {
 		unlink($file);
 
 		$file = CACHE . 'views' . DS . 'pages-view-1.cache';
-		$this->assertFileNotExists($file);
+		$this->assertFileDoesNotExist($file);
 	}
 
 	/**
@@ -383,7 +380,7 @@ class CacheComponentTest extends TestCase {
 	 * @return \Cake\Http\Response|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	protected function getResponseMock(array $methods) {
-		return $this->getMockBuilder(Response::class)->setMethods($methods)->getMock();
+		return $this->getMockBuilder(Response::class)->onlyMethods($methods)->getMock();
 	}
 
 }

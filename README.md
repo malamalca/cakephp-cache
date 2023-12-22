@@ -1,12 +1,12 @@
 # Cache plugin for CakePHP
-[![CI](https://github.com/dereuromark/cakephp-cache/workflows/CI/badge.svg?branch=master)](https://github.com/dereuromark/cakephp-cache/actions?query=workflow%3ACI+branch%3Amaster)
+[![CI](https://github.com/dereuromark/cakephp-cache/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/dereuromark/cakephp-cache/actions/workflows/ci.yml?query=branch%3Amaster)
 [![Coverage Status](https://img.shields.io/codecov/c/github/dereuromark/cakephp-cache/master.svg)](https://codecov.io/github/dereuromark/cakephp-cache/branch/master)
 [![Latest Stable Version](https://poser.pugx.org/dereuromark/cakephp-cache/v/stable.svg)](https://packagist.org/packages/dereuromark/cakephp-cache)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.4-8892BF.svg)](https://php.net/)
-[![License](https://poser.pugx.org/dereuromark/cakephp-cache/license.svg)](https://packagist.org/packages/dereuromark/cakephp-cache)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF.svg)](https://php.net/)
+[![License](https://poser.pugx.org/dereuromark/cakephp-cache/license.svg)](LICENSE)
 [![Coding Standards](https://img.shields.io/badge/cs-PSR--2--R-yellow.svg)](https://github.com/php-fig-rectified/fig-rectified-standards)
 
-This branch is for use with **CakePHP 4.2+**.
+This branch is for use with **CakePHP 5.0+**. For details see [version map](https://github.com/dereuromark/cakephp-cache/wiki#cakephp-version-map).
 
 ## What is it for?
 It is the successor of the 2.x CacheHelper and allows you to cache your complete views as HTML.

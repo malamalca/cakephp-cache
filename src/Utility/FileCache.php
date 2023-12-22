@@ -8,16 +8,11 @@ use Cake\Core\Configure;
 class FileCache {
 
 	/**
-	 * The amount of time to browser cache files (which are unlimited).
-	 *
-	 * @var string
-	 */
-	protected $_cacheTime = '';
+  * The amount of time to browser cache files (which are unlimited).
+  */
+	protected string $_cacheTime = '';
 
-	/**
-	 * @var string|null
-	 */
-	protected $_cacheContent;
+	protected ?string $_cacheContent = null;
 
 	/**
 	 * @var array|null
@@ -27,7 +22,7 @@ class FileCache {
 	/**
 	 * @param array $config Array of config.
 	 */
-	public function __construct($config = []) {
+	public function __construct(array $config = []) {
 		if (!empty($config['cacheTime'])) {
 			$this->_cacheTime = $config['cacheTime'];
 		}
